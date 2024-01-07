@@ -1,0 +1,77 @@
+WeChat: cstutorcs
+QQ: 749389476
+Email: tutorcs@163.com
+% 1 (a) - (e)
+
+mysort(L,SL) :- setof(U,member(U,L),SL).
+
+rev([],[]).
+rev([H|T],R) :- rev(T,RT), append(RT,[H],R).
+
+rev2(L, Inv) :-	tr_rev(L, [], Inv).
+tr_rev([], Acc, Acc).
+tr_rev([H|T], Acc, Inv) :- tr_rev(T, [H|Acc], Inv).
+
+
+
+followedBy(X,Y,L) :- append(_,[X,Y|_],L).
+
+nextTo(X,Y,L) :- followedBy(X,Y,L); 
+		 followedBy(Y,X,L).
+
+sumList([],0).
+sumList([N|L],S) :- sumList(L,SumL), S is N+SumL.
+
+ 
+last(X,[X]).
+last(X,[Y,Z|W]) :- last(X, [Z|W]).
+
+%%%% alternative last definition 
+last2(X, L) :- append(L1, [X], L).
+
+
+
+% 2 (a)
+
+edge(a,b).
+edge(a,e).
+edge(b,c).
+edge(c,d).
+edge(e,f).
+edge(f,c).
+edge(f,d).
+				
+% 2 (b) 
+
+path(X,Y):- edge(X,Y).
+path(X,Y):- edge(X,Z), path(Z,Y).
+
+ppath(X,Y):- edge(X,Y).
+ppath(X,Y):- ppath(Z,Y), edge(X,Z).
+
+% 2 (c) 
+
+path(X,Y, [X,Y]):- edge(X,Y).
+path(X,Y, [X|W]):- edge(X,Z), path(Z,Y,W).
+
+
+% 3
+
+max(X,[X]).
+max(X, [Y,Z|W]) :- Y=<Z, max(X,[Z|W]).
+max(X, [Y,Z|W]) :- Y>Z, max(X,[Y|W]).
+
+% 4
+
+max_of_all(E, [L|Ls]) :- max(X, L), find_max(E,Ls,X).
+
+% find_max(E,Ls,X)  : E is the max element of all the sublists, given that X is the max % found so far  with the lists processed.
+
+find_max(E, [], E).
+find_max(E,[L|Ls],X) :- max(Y,L), bigger_of(X,Y,Z), find_max(E,Ls,Z).
+
+
+% bigger_of(X,Y,Z) : Z is the bigger of X and Y
+
+bigger_of(X,Y,X) :- X>=Y.
+bigger_of(X,Y,Y) :- X<Y.
